@@ -73,10 +73,19 @@ export default function HistoryPage() {
     setLoading(true);
     fetch(`/api/history?page=${page}&limit=${limit}&year=${year}`)
       .then((r) => r.json())
-      .then(setData)
+      .then((d) => {
+        setData({
+          history: d.history || [],
+          total: d.total || 0,
+          summary: {
+            totalTasks: d.summary?.totalTasks || 0,
+            totalCost: d.summary?.totalCost || 0,
+          },
+        });
+      })
       .catch((err) => {
         console.error('Failed to load history:', err);
-        setData(null);
+        setData({ history: [], total: 0, summary: { totalTasks: 0, totalCost: 0 } });
       })
       .finally(() => setLoading(false));
   }, [page, year]);

@@ -2,7 +2,7 @@ import { getDb } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-// GET /api/history?page=1&limit=20&year=2024
+// GET /api/history?page=1&limit=20&year=2026
 export async function GET(request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,57 +16,83 @@ export async function GET(request) {
   const sql = getDb();
 
   try {
-    // Build year filter if provided
-    const yearCondition = year ? `AND EXTRACT(YEAR FROM th.completed_at) = ${year}` : '';
+    let history, countResult, summaryResult;
 
-    // Get task history with joins
-    const history = await sql`
-      SELECT
-        th.id,
-        th.task_id,
-        th.completed_at,
-        th.notes,
-        th.cost,
-        t.name as task_name,
-        c.id as category_id,
-        c.name as category_name,
-        c.slug as category_slug
-      FROM task_history th
-      JOIN tasks t ON th.task_id = t.id
-      JOIN categories c ON t.category_id = c.id
-      WHERE th.user_id = ${user.userId} ${yearCondition}
-      ORDER BY th.completed_at DESC
-      LIMIT ${limit} OFFSET ${offset}
-    `;
+    if (year) {
+      const yearStart = `${year}-01-01T00:00:00.000Z`;
+      const yearEnd = `${year}-12-31T23:59:59.999Z`;
 
-    // Get total count for the year/all time
-    const [countResult] = await sql`
-      SELECT COUNT(*) as total FROM task_history th
-      JOIN tasks t ON th.task_id = t.id
-      WHERE th.user_id = ${user.userId} ${yearCondition}
-    `;
+      history = await sql`
+        SELECT
+          th.id, th.task_id, th.completed_at, th.notes, th.cost,
+          t.name as task_name,
+          c.id as category_id, c.name as category_name, c.slug as category_slug
+        FROM task_history th
+        JOIN tasks t ON th.task_id = t.id
+        JOIN categories c ON t.category_id = c.id
+        WHERE th.user_id = ${user.userId}
+          AND th.completed_at >= ${yearStart} AND th.completed_at <= ${yearEnd}
+        ORDER BY th.completed_at DESC
+        LIMIT ${limit} OFFSET ${offset}
+      `;
 
-    // Get summary stats for the selected year
-    const [summaryResult] = await sql`
-      SELECT
-        COUNT(*) as total_tasks,
-        COALESCE(SUM(th.cost), 0) as total_cost
-      FROM task_history th
-      WHERE th.user_id = ${user.userId} ${yearCondition}
-    `;
+      [countResult] = await sql`
+        SELECT COUNT(*)::int as total FROM task_history th
+        JOIN tasks t ON th.task_id = t.id
+        WHERE th.user_id = ${user.userId}
+          AND th.completed_at >= ${yearStart} AND th.completed_at <= ${yearEnd}
+      `;
+
+      [summaryResult] = await sql`
+        SELECT COUNT(*)::int as total_tasks, COALESCE(SUM(th.cost), 0) as total_cost
+        FROM task_history th
+        WHERE th.user_id = ${user.userId}
+          AND th.completed_at >= ${yearStart} AND th.completed_at <= ${yearEnd}
+      `;
+    } else {
+      history = await sql`
+        SELECT
+          th.id, th.task_id, th.completed_at, th.notes, th.cost,
+          t.name as task_name,
+          c.id as category_id, c.name as category_name, c.slug as category_slug
+        FROM task_history th
+        JOIN tasks t ON th.task_id = t.id
+        JOIN categories c ON t.category_id = c.id
+        WHERE th.user_id = ${user.userId}
+        ORDER BY th.completed_at DESC
+        LIMIT ${limit} OFFSET ${offset}
+      `;
+
+      [countResult] = await sql`
+        SELECT COUNT(*)::int as total FROM task_history th
+        JOIN tasks t ON th.task_id = t.id
+        WHERE th.user_id = ${user.userId}
+      `;
+
+      [summaryResult] = await sql`
+        SELECT COUNT(*)::int as total_tasks, COALESCE(SUM(th.cost), 0) as total_cost
+        FROM task_history th
+        WHERE th.user_id = ${user.userId}
+      `;
+    }
 
     return NextResponse.json({
       history,
-      total: countResult.total,
+      total: countResult?.total || 0,
       page,
       limit,
       summary: {
-        totalTasks: summaryResult.total_tasks,
-        totalCost: parseFloat(summaryResult.total_cost),
+        totalTasks: summaryResult?.total_tasks || 0,
+        totalCost: parseFloat(summaryResult?.total_cost || 0),
       },
     });
   } catch (error) {
     console.error('Fetch history error:', error);
-    return NextResponse.json({ error: 'Failed to fetch history.' }, { status: 500 });
+    return NextResponse.json({
+      error: 'Failed to fetch history.',
+      history: [],
+      total: 0,
+      summary: { totalTasks: 0, totalCost: 0 },
+    }, { status: 500 });
   }
 }
