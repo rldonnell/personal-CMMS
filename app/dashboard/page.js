@@ -60,11 +60,15 @@ export default function DashboardPage() {
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Home Maintenance Dashboard</h1>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <StatCard label="Overdue" value={stats.overdue} color={stats.overdue > 0 ? 'text-red-600' : 'text-green-600'} />
         <StatCard label="Due This Week" value={stats.dueThisWeek} color={stats.dueThisWeek > 0 ? 'text-orange-600' : 'text-gray-800'} />
         <StatCard label="Total Tasks" value={stats.totalTasks} />
         <StatCard label="Completed This Month" value={stats.completedThisMonth} color="text-green-600" />
+        <Link href="/dashboard/honey-do" className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition group">
+          <p className="text-sm text-gray-500 mb-1 flex items-center gap-1">🍯 Honey-Do</p>
+          <p className={`text-3xl font-bold ${stats.openWorkOrders > 0 ? 'text-fw-navy group-hover:text-fw-red' : 'text-gray-800'}`}>{stats.openWorkOrders}</p>
+        </Link>
       </div>
 
       {/* Category cards */}

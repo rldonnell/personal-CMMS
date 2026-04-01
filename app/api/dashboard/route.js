@@ -62,6 +62,12 @@ export async function GET() {
     ORDER BY c.id
   `;
 
+  // Open work orders count
+  const [openWorkOrders] = await sql`
+    SELECT COUNT(*)::int as count FROM work_orders
+    WHERE user_id = ${user.userId} AND status IN ('open', 'in_progress')
+  `;
+
   // Upcoming tasks (next 5, excluding hidden and disabled categories)
   const upcomingTasks = await sql`
     SELECT t.*, c.name as category_name, c.slug as category_slug, c.color as category_color
@@ -81,6 +87,7 @@ export async function GET() {
       dueThisWeek: dueThisWeek.count,
       totalTasks: totalTasks.count,
       completedThisMonth: completedThisMonth.count,
+      openWorkOrders: openWorkOrders.count,
     },
     categories: categoryStats,
     upcomingTasks,

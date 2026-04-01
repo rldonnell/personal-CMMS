@@ -17,6 +17,7 @@ const ALL_NAV_ITEMS = [
   { label: 'Exterior', href: '/dashboard/exterior', icon: '🛡️', slug: 'exterior', categoryId: 9 },
   { label: 'Garage Door', href: '/dashboard/garage-door', icon: '🚗', slug: 'garage-door', categoryId: 10 },
   { label: 'Irrigation', href: '/dashboard/irrigation', icon: '💧', slug: 'irrigation', categoryId: 11 },
+  { label: 'Honey-Do List', href: '/dashboard/honey-do', icon: '🍯' },
   { label: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
 ];
 
