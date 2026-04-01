@@ -1,7 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckIcon, PlusIcon } from '@heroicons/react/24/outline';
+// Inline icon components (no external dependency)
+function CheckIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  );
+}
+function PlusIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+  );
+}
 
 const CATEGORY_ICONS = {
   hvac: '🌡️',

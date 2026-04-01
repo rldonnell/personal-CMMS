@@ -1,7 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+// Inline icon components (no external dependency)
+function ChevronLeftIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  );
+}
+function ChevronRightIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+  );
+}
+function MagnifyingGlassIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    </svg>
+  );
+}
 
 const CATEGORY_ICONS = {
   hvac: '🌡️',
@@ -131,7 +152,7 @@ export default function HistoryPage() {
               }}
               className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-fw-navy"
             >
-              {[2024, 2023, 2022, 2021].map((y) => (
+              {[2026, 2025, 2024, 2023, 2022].map((y) => (
                 <option key={y} value={y}>
                   {y}
                 </option>
