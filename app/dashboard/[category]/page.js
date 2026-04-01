@@ -256,12 +256,30 @@ export default function CategoryPage() {
           {filteredTasks.map((task) => {
             const days = daysUntil(task.next_due?.slice(0, 10));
             const isOverdue = days < 0;
+            const isDueSoon = days >= 0 && days <= 30;
+            const isGood = days > 30 && task.last_completed;
+
+            // Done button style based on task status
+            let doneButtonClass, doneButtonLabel;
+            if (isOverdue) {
+              doneButtonClass = 'bg-red-600 text-white hover:bg-red-700';
+              doneButtonLabel = '✓ Mark Done';
+            } else if (isDueSoon) {
+              doneButtonClass = 'bg-orange-500 text-white hover:bg-orange-600';
+              doneButtonLabel = '✓ Mark Done';
+            } else if (isGood) {
+              doneButtonClass = 'bg-green-100 text-green-700 border border-green-200';
+              doneButtonLabel = '✓ Up to Date';
+            } else {
+              doneButtonClass = 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200';
+              doneButtonLabel = '✓ Mark Done';
+            }
 
             return (
               <div
                 key={task.id}
                 className={`bg-white rounded-xl border p-4 shadow-sm transition hover:shadow-md ${
-                  isOverdue ? 'border-red-200 bg-red-50/30' : 'border-gray-100'
+                  isOverdue ? 'border-red-200 bg-red-50/30' : isDueSoon ? 'border-orange-200 bg-orange-50/20' : isGood ? 'border-green-100' : 'border-gray-100'
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
@@ -292,9 +310,9 @@ export default function CategoryPage() {
                       <button
                         onClick={() => handleComplete(task.id)}
                         disabled={completing === task.id}
-                        className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-green-700 transition disabled:opacity-50"
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition disabled:opacity-50 ${doneButtonClass}`}
                       >
-                        {completing === task.id ? '...' : '✓ Done'}
+                        {completing === task.id ? '...' : doneButtonLabel}
                       </button>
                       <button
                         onClick={() => handleHide(task.id)}

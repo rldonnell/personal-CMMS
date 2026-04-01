@@ -1,20 +1,26 @@
 import { getDb } from '@/lib/db';
 import { createToken } from '@/lib/auth';
+import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   try {
-    const { email } = await request.json();
+    const { email, password } = await request.json();
 
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
     }
 
     const sql = getDb();
-    const [user] = await sql`SELECT id, first_name, last_name, email FROM users WHERE email = ${email.toLowerCase()}`;
+    const [user] = await sql`SELECT id, first_name, last_name, email, password_hash FROM users WHERE email = ${email.toLowerCase()}`;
 
     if (!user) {
-      return NextResponse.json({ error: 'No account found with this email.' }, { status: 404 });
+      return NextResponse.json({ error: 'Invalid email or password.' }, { status: 401 });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    if (!validPassword) {
+      return NextResponse.json({ error: 'Invalid email or password.' }, { status: 401 });
     }
 
     const token = await createToken(user);

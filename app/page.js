@@ -19,7 +19,7 @@ const FEATURES = [
 
 export default function LandingPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', company: '' });
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', company: '', password: '' });
   const [mode, setMode] = useState('signup'); // signup | login
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ export default function LandingPage() {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email }),
+          body: JSON.stringify({ email: form.email, password: form.password }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
@@ -157,8 +157,20 @@ export default function LandingPage() {
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                     placeholder="you@company.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
+                    placeholder={mode === 'signup' ? '6 characters minimum' : 'Enter your password'}
                   />
                 </div>
 

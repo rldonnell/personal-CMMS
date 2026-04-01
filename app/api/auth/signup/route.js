@@ -6,10 +6,14 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   try {
-    const { firstName, lastName, email, company } = await request.json();
+    const { firstName, lastName, email, company, password } = await request.json();
 
-    if (!firstName || !lastName || !email) {
-      return NextResponse.json({ error: 'First name, last name, and email are required.' }, { status: 400 });
+    if (!firstName || !lastName || !email || !password) {
+      return NextResponse.json({ error: 'First name, last name, email, and password are required.' }, { status: 400 });
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json({ error: 'Password must be at least 6 characters.' }, { status: 400 });
     }
 
     const sql = getDb();
@@ -20,8 +24,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'An account with this email already exists. Please sign in.' }, { status: 409 });
     }
 
-    // Create a simple password hash (email-based for this freebie — no password needed)
-    const passwordHash = await bcrypt.hash(email.toLowerCase(), 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
     // Insert user
     const [user] = await sql`
