@@ -9,6 +9,13 @@ const NAV_ITEMS = [
   { label: 'HVAC', href: '/dashboard/hvac', icon: '🌡️' },
   { label: 'Water Heater', href: '/dashboard/water-heater', icon: '🔥' },
   { label: 'Pool', href: '/dashboard/pool', icon: '🏊' },
+  { label: 'Plumbing', href: '/dashboard/plumbing', icon: '🔧' },
+  { label: 'Electrical', href: '/dashboard/electrical', icon: '⚡' },
+  { label: 'Septic System', href: '/dashboard/septic', icon: '🪣' },
+  { label: 'Roof & Gutters', href: '/dashboard/roof-gutters', icon: '🏠' },
+  { label: 'Appliances', href: '/dashboard/appliances', icon: '🧺' },
+  { label: 'Exterior', href: '/dashboard/exterior', icon: '🛡️' },
+  { label: 'Garage Door', href: '/dashboard/garage-door', icon: '🚗' },
 ];
 
 export default function DashboardLayout({ children }) {
@@ -55,7 +62,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-0.5 overflow-y-auto">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
             return (

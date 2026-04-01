@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-const CATEGORY_ICONS = { hvac: '🌡️', 'water-heater': '🔥', pool: '🏊' };
+const CATEGORY_ICONS = {
+  hvac: '🌡️', 'water-heater': '🔥', pool: '🏊',
+  plumbing: '🔧', electrical: '⚡', septic: '🪣',
+  'roof-gutters': '🏠', appliances: '🧺', exterior: '🛡️',
+  'garage-door': '🚗',
+};
 
 function StatCard({ label, value, color }) {
   return (
@@ -64,7 +69,7 @@ export default function DashboardPage() {
 
       {/* Category cards */}
       <h2 className="text-lg font-semibold text-gray-700 mb-4">Systems</h2>
-      <div className="grid md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
         {categories.map((cat) => (
           <Link
             key={cat.slug}

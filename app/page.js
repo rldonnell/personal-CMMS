@@ -4,21 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const FEATURES = [
-  {
-    icon: '🌡️',
-    title: 'HVAC',
-    desc: 'Filter changes, tune-ups, ductwork inspections, CO detector tests, and more — all on schedule.',
-  },
-  {
-    icon: '🔥',
-    title: 'Water Heater',
-    desc: 'T&P valve tests, sediment flushes, anode rod checks — extend the life of your water heater.',
-  },
-  {
-    icon: '🏊',
-    title: 'Pool',
-    desc: 'Water chemistry, filter cleaning, equipment inspections, shock schedules, and seasonal openings.',
-  },
+  { icon: '🌡️', title: 'HVAC', desc: 'Filter changes, tune-ups, ductwork inspections, CO detector tests, and more.' },
+  { icon: '🔥', title: 'Water Heater', desc: 'T&P valve tests, sediment flushes, anode rod checks — extend its life.' },
+  { icon: '🏊', title: 'Pool', desc: 'Water chemistry, filter cleaning, shock schedules, and seasonal openings.' },
+  { icon: '🔧', title: 'Plumbing', desc: 'Shut-off valve exercise, leak checks, flappers, hoses, sump pump tests.' },
+  { icon: '⚡', title: 'Electrical', desc: 'GFCI tests, smoke detectors, breaker panel checks, surge protectors.' },
+  { icon: '🪣', title: 'Septic System', desc: 'Tank pumping schedules, drain field monitoring, baffle inspections.' },
+  { icon: '🏠', title: 'Roof & Gutters', desc: 'Gutter cleaning, shingle inspections, flashing checks, moss treatment.' },
+  { icon: '🧺', title: 'Appliances', desc: 'Dryer vent cleaning, fridge coils, dishwasher filters, washer maintenance.' },
+  { icon: '🛡️', title: 'Exterior', desc: 'Foundation cracks, grading, siding, deck care, caulking, drainage.' },
+  { icon: '🚗', title: 'Garage Door', desc: 'Lubrication, safety sensor tests, spring inspections, balance checks.' },
 ];
 
 export default function LandingPage() {
@@ -201,14 +196,14 @@ export default function LandingPage() {
         {/* Features */}
         <section className="py-16 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
-            <h3 className="text-2xl font-bold text-center text-gray-800 mb-2">What You Can Track</h3>
-            <p className="text-gray-500 text-center mb-10">Pre-loaded with expert maintenance schedules. Add your own anytime.</p>
-            <div className="grid md:grid-cols-3 gap-8">
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-2">10 Systems. One Dashboard.</h3>
+            <p className="text-gray-500 text-center mb-10">Pre-loaded with expert maintenance schedules for every major home system. Add your own anytime.</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {FEATURES.map((f) => (
-                <div key={f.title} className="border border-gray-100 rounded-xl p-6 hover:shadow-lg transition">
-                  <div className="text-4xl mb-4">{f.icon}</div>
-                  <h4 className="text-lg font-bold text-gray-800 mb-2">{f.title}</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">{f.desc}</p>
+                <div key={f.title} className="border border-gray-100 rounded-xl p-5 hover:shadow-lg transition text-center">
+                  <div className="text-3xl mb-3">{f.icon}</div>
+                  <h4 className="text-sm font-bold text-gray-800 mb-1">{f.title}</h4>
+                  <p className="text-gray-500 text-xs leading-relaxed">{f.desc}</p>
                 </div>
               ))}
             </div>

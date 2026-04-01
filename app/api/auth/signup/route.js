@@ -41,6 +41,13 @@ export async function POST(request) {
         'hvac': 'My HVAC System',
         'water-heater': 'My Water Heater',
         'pool': 'My Pool',
+        'plumbing': 'My Plumbing',
+        'electrical': 'My Electrical',
+        'septic': 'My Septic System',
+        'roof-gutters': 'My Roof & Gutters',
+        'appliances': 'My Appliances',
+        'exterior': 'My Exterior',
+        'garage-door': 'My Garage Door',
       };
 
       const [equip] = await sql`

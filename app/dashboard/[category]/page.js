@@ -7,6 +7,13 @@ const CATEGORY_META = {
   hvac: { label: 'HVAC', icon: '🌡️', color: '#1e3a5f', desc: 'Heating, ventilation, and air conditioning' },
   'water-heater': { label: 'Water Heater', icon: '🔥', color: '#dd6b20', desc: 'Hot water heater maintenance' },
   pool: { label: 'Pool', icon: '🏊', color: '#2c5282', desc: 'Swimming pool equipment and water chemistry' },
+  plumbing: { label: 'Plumbing', icon: '🔧', color: '#2b6cb0', desc: 'Pipes, fixtures, valves, and water supply systems' },
+  electrical: { label: 'Electrical', icon: '⚡', color: '#d69e2e', desc: 'Electrical systems, outlets, panels, and safety devices' },
+  septic: { label: 'Septic System', icon: '🪣', color: '#744210', desc: 'Septic tank, drain field, and wastewater management' },
+  'roof-gutters': { label: 'Roof & Gutters', icon: '🏠', color: '#718096', desc: 'Roofing, gutters, downspouts, and drainage' },
+  appliances: { label: 'Appliances', icon: '🧺', color: '#4a5568', desc: 'Major household appliances and their maintenance' },
+  exterior: { label: 'Exterior & Foundation', icon: '🛡️', color: '#276749', desc: 'Siding, foundation, driveway, deck, and outdoor structures' },
+  'garage-door': { label: 'Garage Door', icon: '🚗', color: '#6b46c1', desc: 'Garage door system, opener, tracks, and hardware' },
 };
 
 function daysUntil(dateStr) {
