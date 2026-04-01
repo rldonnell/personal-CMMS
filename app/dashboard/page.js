@@ -7,7 +7,7 @@ const CATEGORY_ICONS = {
   hvac: '🌡️', 'water-heater': '🔥', pool: '🏊',
   plumbing: '🔧', electrical: '⚡', septic: '🪣',
   'roof-gutters': '🏠', appliances: '🧺', exterior: '🛡️',
-  'garage-door': '🚗',
+  'garage-door': '🚗', irrigation: '💧',
 };
 
 function StatCard({ label, value, color }) {
@@ -79,9 +79,9 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{CATEGORY_ICONS[cat.slug]}</span>
-                <h3 className="font-bold text-gray-800 group-hover:text-fw-blue transition">{cat.name}</h3>
+                <h3 className="font-bold text-gray-800 group-hover:text-fw-navy transition">{cat.name}</h3>
               </div>
-              <span className="text-gray-300 group-hover:text-fw-blue transition">→</span>
+              <span className="text-gray-300 group-hover:text-fw-navy transition">→</span>
             </div>
             <div className="flex gap-4 text-sm">
               <span className="text-gray-500">{cat.total_tasks} tasks</span>
@@ -118,7 +118,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Promo banner */}
-      <div className="mt-8 bg-gradient-to-r from-fw-blue to-fw-blue-light rounded-xl p-6 text-white">
+      <div className="mt-8 bg-gradient-to-r from-fw-navy to-fw-navy-dark rounded-xl p-6 text-white">
         <h3 className="font-bold mb-1">Like what you see?</h3>
         <p className="text-blue-100 text-sm mb-3">
           The full Four Winds CMMS handles facilities, fleets, equipment, work orders, inventory, and teams — all in one platform.
@@ -127,7 +127,7 @@ export default function DashboardPage() {
           href="https://fourwindscmms.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-fw-gold text-fw-blue px-5 py-2 rounded-lg text-sm font-semibold hover:bg-yellow-400 transition"
+          className="inline-block bg-fw-red text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-fw-red-dark transition"
         >
           Learn More →
         </a>

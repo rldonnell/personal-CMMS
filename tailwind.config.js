@@ -7,12 +7,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'fw-blue': '#1e3a5f',
-        'fw-blue-light': '#2c5282',
-        'fw-gold': '#d4a843',
+        'fw-navy': '#154289',
+        'fw-navy-dark': '#0e2f5e',
+        'fw-red': '#B00001',
+        'fw-red-dark': '#A40000',
+        'fw-heading': '#1E293B',
+        'fw-body': '#334155',
         'fw-green': '#38a169',
         'fw-orange': '#dd6b20',
-        'fw-red': '#e53e3e',
       },
     },
   },

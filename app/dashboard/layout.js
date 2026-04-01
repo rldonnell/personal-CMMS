@@ -4,18 +4,20 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-const NAV_ITEMS = [
+const ALL_NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: '📊' },
-  { label: 'HVAC', href: '/dashboard/hvac', icon: '🌡️' },
-  { label: 'Water Heater', href: '/dashboard/water-heater', icon: '🔥' },
-  { label: 'Pool', href: '/dashboard/pool', icon: '🏊' },
-  { label: 'Plumbing', href: '/dashboard/plumbing', icon: '🔧' },
-  { label: 'Electrical', href: '/dashboard/electrical', icon: '⚡' },
-  { label: 'Septic System', href: '/dashboard/septic', icon: '🪣' },
-  { label: 'Roof & Gutters', href: '/dashboard/roof-gutters', icon: '🏠' },
-  { label: 'Appliances', href: '/dashboard/appliances', icon: '🧺' },
-  { label: 'Exterior', href: '/dashboard/exterior', icon: '🛡️' },
-  { label: 'Garage Door', href: '/dashboard/garage-door', icon: '🚗' },
+  { label: 'HVAC', href: '/dashboard/hvac', icon: '🌡️', slug: 'hvac', categoryId: 1 },
+  { label: 'Water Heater', href: '/dashboard/water-heater', icon: '🔥', slug: 'water-heater', categoryId: 2 },
+  { label: 'Pool', href: '/dashboard/pool', icon: '🏊', slug: 'pool', categoryId: 3 },
+  { label: 'Plumbing', href: '/dashboard/plumbing', icon: '🔧', slug: 'plumbing', categoryId: 4 },
+  { label: 'Electrical', href: '/dashboard/electrical', icon: '⚡', slug: 'electrical', categoryId: 5 },
+  { label: 'Septic System', href: '/dashboard/septic', icon: '🪣', slug: 'septic', categoryId: 6 },
+  { label: 'Roof & Gutters', href: '/dashboard/roof-gutters', icon: '🏠', slug: 'roof-gutters', categoryId: 7 },
+  { label: 'Appliances', href: '/dashboard/appliances', icon: '🧺', slug: 'appliances', categoryId: 8 },
+  { label: 'Exterior', href: '/dashboard/exterior', icon: '🛡️', slug: 'exterior', categoryId: 9 },
+  { label: 'Garage Door', href: '/dashboard/garage-door', icon: '🚗', slug: 'garage-door', categoryId: 10 },
+  { label: 'Irrigation', href: '/dashboard/irrigation', icon: '💧', slug: 'irrigation', categoryId: 11 },
+  { label: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
 ];
 
 export default function DashboardLayout({ children }) {
@@ -23,6 +25,7 @@ export default function DashboardLayout({ children }) {
   const pathname = usePathname();
   const [user, setUser] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navItems, setNavItems] = useState(ALL_NAV_ITEMS);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -32,6 +35,23 @@ export default function DashboardLayout({ children }) {
         else setUser(data.user);
       });
   }, [router]);
+
+  useEffect(() => {
+    fetch('/api/settings/categories')
+      .then((r) => r.json())
+      .then((data) => {
+        const categories = data.categories || [];
+        const enabledSlugs = new Set(
+          categories.filter((c) => c.enabled).map((c) => c.slug)
+        );
+        const filtered = ALL_NAV_ITEMS.filter((item) => {
+          if (!item.slug) return true; // Dashboard, Settings always show
+          return enabledSlugs.has(item.slug);
+        });
+        setNavItems(filtered);
+      })
+      .catch(() => {}); // fail silently, show all items
+  }, []);
 
   async function handleLogout() {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -49,10 +69,10 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-fw-blue text-white transform transition-transform duration-200 lg:translate-x-0 lg:static lg:flex lg:flex-col ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-fw-navy text-white transform transition-transform duration-200 lg:translate-x-0 lg:static lg:flex lg:flex-col ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-fw-gold rounded-lg flex items-center justify-center text-fw-blue font-bold text-sm">
+            <div className="w-9 h-9 bg-fw-red rounded-lg flex items-center justify-center text-white font-bold text-sm">
               FW
             </div>
             <div>
@@ -63,7 +83,7 @@ export default function DashboardLayout({ children }) {
         </div>
 
         <nav className="flex-1 p-4 space-y-0.5 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
@@ -97,7 +117,7 @@ export default function DashboardLayout({ children }) {
               href="https://fourwindscmms.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-fw-gold hover:text-yellow-300 font-medium"
+              className="text-xs text-fw-red hover:text-red-300 font-medium"
             >
               See the full CMMS →
             </a>

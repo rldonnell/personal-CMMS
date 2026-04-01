@@ -14,6 +14,7 @@ const FEATURES = [
   { icon: '🧺', title: 'Appliances', desc: 'Dryer vent cleaning, fridge coils, dishwasher filters, washer maintenance.' },
   { icon: '🛡️', title: 'Exterior', desc: 'Foundation cracks, grading, siding, deck care, caulking, drainage.' },
   { icon: '🚗', title: 'Garage Door', desc: 'Lubrication, safety sensor tests, spring inspections, balance checks.' },
+  { icon: '💧', title: 'Irrigation', desc: 'Sprinkler startup/winterization, head checks, controller scheduling, leak detection.' },
 ];
 
 export default function LandingPage() {
@@ -58,10 +59,10 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <header className="bg-fw-blue text-white">
+      <header className="bg-fw-navy text-white">
         <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-fw-gold rounded-lg flex items-center justify-center text-fw-blue font-bold text-lg">
+            <div className="w-10 h-10 bg-fw-red rounded-lg flex items-center justify-center text-white font-bold text-lg">
               FW
             </div>
             <div>
@@ -82,7 +83,7 @@ export default function LandingPage() {
 
       <main>
         {/* Hero section */}
-        <section className="bg-gradient-to-b from-fw-blue to-fw-blue-light text-white py-16 px-6">
+        <section className="bg-gradient-to-b from-fw-navy to-fw-navy-dark text-white py-16 px-6">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-4 leading-tight">
@@ -121,7 +122,7 @@ export default function LandingPage() {
                           required
                           value={form.firstName}
                           onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                           placeholder="Robert"
                         />
                       </div>
@@ -132,7 +133,7 @@ export default function LandingPage() {
                           required
                           value={form.lastName}
                           onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                           placeholder="Donnell"
                         />
                       </div>
@@ -143,7 +144,7 @@ export default function LandingPage() {
                         type="text"
                         value={form.company}
                         onChange={(e) => setForm({ ...form, company: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                         placeholder="Optional"
                       />
                     </div>
@@ -168,7 +169,7 @@ export default function LandingPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-fw-blue text-white py-3 rounded-lg font-semibold hover:bg-fw-blue-light transition disabled:opacity-50"
+                  className="w-full bg-fw-navy text-white py-3 rounded-lg font-semibold hover:bg-fw-navy-dark transition disabled:opacity-50"
                 >
                   {loading ? 'Please wait...' : mode === 'signup' ? 'Create My Account' : 'Sign In'}
                 </button>
@@ -177,13 +178,13 @@ export default function LandingPage() {
               <p className="text-center text-sm text-gray-500 mt-4">
                 {mode === 'signup' ? (
                   <>Already have an account?{' '}
-                    <button onClick={() => setMode('login')} className="text-fw-blue font-medium hover:underline">
+                    <button onClick={() => setMode('login')} className="text-fw-navy font-medium hover:underline">
                       Sign in
                     </button>
                   </>
                 ) : (
                   <>Need an account?{' '}
-                    <button onClick={() => setMode('signup')} className="text-fw-blue font-medium hover:underline">
+                    <button onClick={() => setMode('signup')} className="text-fw-navy font-medium hover:underline">
                       Sign up free
                     </button>
                   </>
@@ -224,7 +225,7 @@ export default function LandingPage() {
               href="https://fourwindscmms.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-fw-gold text-fw-blue px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition"
+              className="inline-block bg-fw-red text-white px-8 py-3 rounded-lg font-semibold hover:bg-fw-red-dark transition"
             >
               Explore Four Winds CMMS →
             </a>
@@ -232,7 +233,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="bg-fw-blue text-blue-200 py-6 px-6 text-center text-sm">
+      <footer className="bg-fw-navy text-blue-200 py-6 px-6 text-center text-sm">
         <p>© {new Date().getFullYear()} Four Winds CMMS · Home Edition · A free tool by{' '}
           <a href="https://p5marketing.com" className="text-white hover:underline" target="_blank" rel="noopener noreferrer">
             P5 Marketing

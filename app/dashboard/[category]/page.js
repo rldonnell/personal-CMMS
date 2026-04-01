@@ -14,6 +14,7 @@ const CATEGORY_META = {
   appliances: { label: 'Appliances', icon: '🧺', color: '#4a5568', desc: 'Major household appliances and their maintenance' },
   exterior: { label: 'Exterior & Foundation', icon: '🛡️', color: '#276749', desc: 'Siding, foundation, driveway, deck, and outdoor structures' },
   'garage-door': { label: 'Garage Door', icon: '🚗', color: '#6b46c1', desc: 'Garage door system, opener, tracks, and hardware' },
+  irrigation: { label: 'Irrigation & Sprinklers', icon: '💧', color: '#2f855a', desc: 'Lawn sprinkler systems, drip irrigation, and outdoor watering' },
 };
 
 function daysUntil(dateStr) {
@@ -51,6 +52,7 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [completing, setCompleting] = useState(null);
+  const [hiding, setHiding] = useState(null);
   const [newTask, setNewTask] = useState({ name: '', description: '', intervalDays: 30, priority: 'medium' });
   const [filter, setFilter] = useState('all'); // all, overdue, due-soon, upcoming
 
@@ -97,6 +99,20 @@ export default function CategoryPage() {
     fetchTasks();
   }
 
+  async function handleHide(taskId) {
+    setHiding(taskId);
+    try {
+      await fetch(`/api/tasks/${taskId}/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hidden: true }),
+      });
+      fetchTasks();
+    } finally {
+      setHiding(null);
+    }
+  }
+
   if (!meta) {
     return <div className="p-8 text-red-500">Unknown category: {category}</div>;
   }
@@ -132,7 +148,7 @@ export default function CategoryPage() {
         </div>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-fw-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-fw-blue-light transition"
+          className="bg-fw-navy text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-fw-navy-light transition"
         >
           {showAddForm ? 'Cancel' : '+ Add Custom Task'}
         </button>
@@ -142,7 +158,7 @@ export default function CategoryPage() {
       <div className="flex gap-3 mb-6">
         <button
           onClick={() => setFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-sm transition ${filter === 'all' ? 'bg-fw-blue text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}`}
+          className={`px-3 py-1.5 rounded-lg text-sm transition ${filter === 'all' ? 'bg-fw-navy text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}`}
         >
           All ({tasks.length})
         </button>
@@ -179,7 +195,7 @@ export default function CategoryPage() {
                   required
                   value={newTask.name}
                   onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                   placeholder="e.g., Clean evaporator coils"
                 />
               </div>
@@ -191,7 +207,7 @@ export default function CategoryPage() {
                     min="1"
                     value={newTask.intervalDays}
                     onChange={(e) => setNewTask({ ...newTask, intervalDays: parseInt(e.target.value) || 30 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                   />
                 </div>
                 <div>
@@ -199,7 +215,7 @@ export default function CategoryPage() {
                   <select
                     value={newTask.priority}
                     onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                   >
                     <option value="high">High</option>
                     <option value="medium">Medium</option>
@@ -214,13 +230,13 @@ export default function CategoryPage() {
                 value={newTask.description}
                 onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-blue focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
                 placeholder="Optional notes about what this task involves..."
               />
             </div>
             <button
               type="submit"
-              className="bg-fw-blue text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-fw-blue-light transition"
+              className="bg-fw-navy text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-fw-navy-light transition"
             >
               Add Task
             </button>
@@ -272,13 +288,20 @@ export default function CategoryPage() {
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <DueLabel dateStr={task.next_due?.slice(0, 10)} />
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap justify-end">
                       <button
                         onClick={() => handleComplete(task.id)}
                         disabled={completing === task.id}
                         className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-green-700 transition disabled:opacity-50"
                       >
                         {completing === task.id ? '...' : '✓ Done'}
+                      </button>
+                      <button
+                        onClick={() => handleHide(task.id)}
+                        disabled={hiding === task.id}
+                        className="text-gray-400 hover:text-gray-600 px-2 py-1.5 text-xs transition disabled:opacity-50"
+                      >
+                        {hiding === task.id ? '...' : 'Hide'}
                       </button>
                       {task.is_custom && (
                         <button

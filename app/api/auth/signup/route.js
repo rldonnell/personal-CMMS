@@ -48,6 +48,7 @@ export async function POST(request) {
         'appliances': 'My Appliances',
         'exterior': 'My Exterior',
         'garage-door': 'My Garage Door',
+        'irrigation': 'My Irrigation System',
       };
 
       const [equip] = await sql`
