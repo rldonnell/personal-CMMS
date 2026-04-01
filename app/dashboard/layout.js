@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+const ADMIN_EMAILS = ['rdonnell@p5marketing.com'];
+
 const ALL_NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: '📊' },
   { label: 'HVAC', href: '/dashboard/hvac', icon: '🌡️', slug: 'hvac', categoryId: 1 },
@@ -48,14 +50,18 @@ export default function DashboardLayout({ children }) {
         const enabledSlugs = new Set(
           categories.filter((c) => c.enabled).map((c) => c.slug)
         );
-        const filtered = ALL_NAV_ITEMS.filter((item) => {
+        let filtered = ALL_NAV_ITEMS.filter((item) => {
           if (!item.slug) return true; // Dashboard, Settings always show
           return enabledSlugs.has(item.slug);
         });
+        // Add admin link for admin users
+        if (user && ADMIN_EMAILS.includes(user.email?.toLowerCase())) {
+          filtered = [...filtered, { label: 'Admin', href: '/dashboard/admin', icon: '👑' }];
+        }
         setNavItems(filtered);
       })
       .catch(() => {}); // fail silently, show all items
-  }, []);
+  }, [user]);
 
   async function handleLogout() {
     await fetch('/api/auth/logout', { method: 'POST' });
