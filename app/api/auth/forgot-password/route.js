@@ -27,25 +27,27 @@ export async function POST(request) {
 
       const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
 
-      // Try to send email via Resend if API key exists
-      if (process.env.RESEND_API_KEY) {
+      // Send email via Postmark if server token exists
+      if (process.env.POSTMARK_SERVER_TOKEN) {
         try {
-          await fetch('https://api.resend.com/emails', {
+          await fetch('https://api.postmarkapp.com/email', {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+              'Accept': 'application/json',
               'Content-Type': 'application/json',
+              'X-Postmark-Server-Token': process.env.POSTMARK_SERVER_TOKEN,
             },
             body: JSON.stringify({
-              from: process.env.RESEND_FROM_EMAIL || 'Four Winds Home CMMS <noreply@homecmms.com>',
-              to: [user.email],
-              subject: 'Reset Your Password — Four Winds Home CMMS',
-              html: `<p>Hi ${user.first_name},</p><p>Click the link below to reset your password. This link expires in 1 hour.</p><p><a href="${resetUrl}">${resetUrl}</a></p><p>If you didn't request this, you can safely ignore this email.</p><p>— Four Winds Home CMMS</p>`,
+              From: process.env.POSTMARK_FROM_EMAIL || 'noreply@homecmms.com',
+              To: user.email,
+              Subject: 'Reset Your Password — Four Winds Home CMMS',
+              HtmlBody: `<div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;"><div style="background: #154289; padding: 20px; border-radius: 8px 8px 0 0;"><h1 style="color: #fff; margin: 0; font-size: 18px;">Four Winds Home CMMS</h1></div><div style="padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;"><p>Hi ${user.first_name},</p><p>We received a request to reset your password. Click the button below to choose a new one. This link expires in 1 hour.</p><p style="text-align: center; margin: 24px 0;"><a href="${resetUrl}" style="background: #154289; color: #fff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">Reset My Password</a></p><p style="font-size: 13px; color: #666;">If the button doesn't work, copy and paste this link:<br/><a href="${resetUrl}" style="color: #154289;">${resetUrl}</a></p><p style="font-size: 13px; color: #999; margin-top: 24px;">If you didn't request this, you can safely ignore this email.</p></div></div>`,
+              TextBody: `Hi ${user.first_name},\n\nWe received a request to reset your password. Visit the link below to choose a new one (expires in 1 hour):\n\n${resetUrl}\n\nIf you didn't request this, you can safely ignore this email.\n\n— Four Winds Home CMMS`,
+              MessageStream: 'outbound',
             }),
           });
         } catch (emailError) {
-          console.error('Failed to send reset email via Resend:', emailError);
-          // Continue anyway - user can still use the URL
+          console.error('Failed to send reset email via Postmark:', emailError);
         }
       } else {
         // Log to console for development/testing
