@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -61,6 +61,88 @@ export default function ResetPasswordPage() {
     }
   }
 
+  if (!token) {
+    return (
+      <>
+        <h2 className="text-2xl font-bold mb-4 text-red-600">Invalid Reset Link</h2>
+        <p className="text-gray-600 text-sm mb-6">{error}</p>
+        <Link
+          href="/forgot-password"
+          className="block text-center bg-fw-navy text-white py-3 rounded-lg font-semibold hover:bg-fw-navy-dark transition"
+        >
+          Request New Reset Link
+        </Link>
+      </>
+    );
+  }
+
+  if (success) {
+    return (
+      <>
+        <h2 className="text-2xl font-bold mb-2 text-green-600">Password Reset!</h2>
+        <p className="text-gray-600 text-sm mb-4">Your password has been reset successfully.</p>
+        <p className="text-gray-500 text-sm">Redirecting to sign in...</p>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h2 className="text-2xl font-bold mb-2">Create New Password</h2>
+      <p className="text-gray-500 text-sm mb-6">
+        Enter a new password for your account.
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">New Password *</label>
+          <input
+            type="password"
+            required
+            minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
+            placeholder="6 characters minimum"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
+          <input
+            type="password"
+            required
+            minLength={6}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
+            placeholder="Re-enter password"
+          />
+        </div>
+
+        {error && (
+          <p className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-fw-navy text-white py-3 rounded-lg font-semibold hover:bg-fw-navy-dark transition disabled:opacity-50"
+        >
+          {loading ? 'Please wait...' : 'Reset Password'}
+        </button>
+      </form>
+
+      <p className="text-center text-sm text-gray-500 mt-6">
+        <Link href="/" className="text-fw-navy font-medium hover:underline">
+          Back to sign in
+        </Link>
+      </p>
+    </>
+  );
+}
+
+export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -89,77 +171,9 @@ export default function ResetPasswordPage() {
       {/* Main content */}
       <main className="bg-gradient-to-b from-fw-navy to-fw-navy-dark text-white py-16 px-6 min-h-[calc(100vh-200px)] flex items-center">
         <div className="max-w-md w-full mx-auto bg-white text-gray-800 rounded-2xl shadow-2xl p-8">
-          {!token ? (
-            <>
-              <h2 className="text-2xl font-bold mb-4 text-red-600">Invalid Reset Link</h2>
-              <p className="text-gray-600 text-sm mb-6">{error}</p>
-              <Link
-                href="/forgot-password"
-                className="block text-center bg-fw-navy text-white py-3 rounded-lg font-semibold hover:bg-fw-navy-dark transition"
-              >
-                Request New Reset Link
-              </Link>
-            </>
-          ) : success ? (
-            <>
-              <h2 className="text-2xl font-bold mb-2 text-green-600">Password Reset!</h2>
-              <p className="text-gray-600 text-sm mb-4">Your password has been reset successfully.</p>
-              <p className="text-gray-500 text-sm">Redirecting to sign in...</p>
-            </>
-          ) : (
-            <>
-              <h2 className="text-2xl font-bold mb-2">Create New Password</h2>
-              <p className="text-gray-500 text-sm mb-6">
-                Enter a new password for your account.
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">New Password *</label>
-                  <input
-                    type="password"
-                    required
-                    minLength={6}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
-                    placeholder="6 characters minimum"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
-                  <input
-                    type="password"
-                    required
-                    minLength={6}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fw-navy focus:border-transparent outline-none"
-                    placeholder="Re-enter password"
-                  />
-                </div>
-
-                {error && (
-                  <p className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg">{error}</p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-fw-navy text-white py-3 rounded-lg font-semibold hover:bg-fw-navy-dark transition disabled:opacity-50"
-                >
-                  {loading ? 'Please wait...' : 'Reset Password'}
-                </button>
-              </form>
-
-              <p className="text-center text-sm text-gray-500 mt-6">
-                <Link href="/" className="text-fw-navy font-medium hover:underline">
-                  Back to sign in
-                </Link>
-              </p>
-            </>
-          )}
+          <Suspense fallback={<div className="animate-pulse text-gray-400">Loading...</div>}>
+            <ResetPasswordForm />
+          </Suspense>
         </div>
       </main>
 
