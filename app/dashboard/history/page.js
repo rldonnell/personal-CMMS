@@ -108,16 +108,13 @@ export default function HistoryPage() {
     }
   }, [data, search]);
 
-  if (loading && !data) {
+  if (loading) {
     return <div className="animate-pulse text-gray-400 p-8">Loading history...</div>;
   }
 
-  if (!data) {
-    return <div className="text-red-500 p-8">Failed to load history data.</div>;
-  }
-
-  const { summary, total } = data;
-  const totalPages = Math.ceil(total / limit);
+  const summary = data?.summary || { totalTasks: 0, totalCost: 0 };
+  const total = data?.total || 0;
+  const totalPages = Math.ceil(total / limit) || 1;
 
   return (
     <div>
