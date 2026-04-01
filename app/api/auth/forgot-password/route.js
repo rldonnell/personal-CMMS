@@ -25,7 +25,8 @@ export async function POST(request) {
         VALUES (${user.id}, ${token}, ${expiresAt.toISOString()})
       `;
 
-      const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
+      const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').trim().replace(/\/+$/, '');
+      const resetUrl = `${baseUrl}/reset-password?token=${token}`;
 
       // Send email via Postmark if server token exists
       if (process.env.POSTMARK_SERVER_TOKEN) {
