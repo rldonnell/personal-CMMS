@@ -174,6 +174,14 @@ export default function LandingPage() {
                   />
                 </div>
 
+                {mode === 'login' && (
+                  <div className="text-right -mt-2">
+                    <a href="/forgot-password" className="text-sm text-fw-navy hover:underline">
+                      Forgot password?
+                    </a>
+                  </div>
+                )}
+
                 {error && (
                   <p className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg">{error}</p>
                 )}
@@ -209,7 +217,7 @@ export default function LandingPage() {
         {/* Features */}
         <section className="py-16 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
-            <h3 className="text-2xl font-bold text-center text-gray-800 mb-2">10 Systems. One Dashboard.</h3>
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-2">11 Systems. One Dashboard.</h3>
             <p className="text-gray-500 text-center mb-10">Pre-loaded with expert maintenance schedules for every major home system. Add your own anytime.</p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {FEATURES.map((f) => (
