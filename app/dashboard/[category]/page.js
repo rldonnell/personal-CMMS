@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
+import EquipmentCard from '@/components/EquipmentCard';
+import CompletionModal from '@/components/CompletionModal';
 
 const CATEGORY_META = {
   hvac: { label: 'HVAC', icon: '🌡️', color: '#1e3a5f', desc: 'Heating, ventilation, and air conditioning' },
@@ -52,6 +54,9 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [completing, setCompleting] = useState(null);
+  const [completingTaskId, setCompletingTaskId] = useState(null);
+  const [completionNotes, setCompletionNotes] = useState('');
+  const [completionCost, setCompletionCost] = useState('');
   const [hiding, setHiding] = useState(null);
   const [newTask, setNewTask] = useState({ name: '', description: '', intervalDays: 30, priority: 'medium' });
   const [filter, setFilter] = useState('all'); // all, overdue, due-soon, upcoming
@@ -67,18 +72,39 @@ export default function CategoryPage() {
     fetchTasks();
   }, [fetchTasks]);
 
-  async function handleComplete(taskId) {
+  function openCompletionModal(taskId) {
+    setCompletingTaskId(taskId);
+    setCompletionNotes('');
+    setCompletionCost('');
+  }
+
+  function closeCompletionModal() {
+    setCompletingTaskId(null);
+    setCompletionNotes('');
+    setCompletionCost('');
+  }
+
+  async function handleComplete(taskId, notes = '', cost = '') {
     setCompleting(taskId);
     try {
+      const body = {};
+      if (notes) body.notes = notes;
+      if (cost) body.cost = parseFloat(cost);
+
       await fetch(`/api/tasks/${taskId}/complete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        body: JSON.stringify(body),
       });
       fetchTasks();
     } finally {
       setCompleting(null);
     }
+  }
+
+  async function handleCompleteWithModal(taskId) {
+    await handleComplete(taskId, completionNotes, completionCost);
+    closeCompletionModal();
   }
 
   async function handleAddTask(e) {
@@ -137,6 +163,9 @@ export default function CategoryPage() {
 
   return (
     <div>
+      {/* Equipment Profile Card */}
+      <EquipmentCard categorySlug={category} />
+
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -308,7 +337,7 @@ export default function CategoryPage() {
                     <DueLabel dateStr={task.next_due?.slice(0, 10)} />
                     <div className="flex gap-2 flex-wrap justify-end">
                       <button
-                        onClick={() => handleComplete(task.id)}
+                        onClick={() => openCompletionModal(task.id)}
                         disabled={completing === task.id}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition disabled:opacity-50 ${doneButtonClass}`}
                       >
@@ -337,6 +366,22 @@ export default function CategoryPage() {
           })}
         </div>
       )}
+
+      {/* Completion Modal */}
+      <CompletionModal
+        isOpen={completingTaskId !== null}
+        onClose={closeCompletionModal}
+        onSaveAndComplete={() => handleCompleteWithModal(completingTaskId)}
+        onSkip={() => {
+          handleComplete(completingTaskId, '', '');
+          closeCompletionModal();
+        }}
+        notes={completionNotes}
+        onNotesChange={setCompletionNotes}
+        cost={completionCost}
+        onCostChange={setCompletionCost}
+        isLoading={completing !== null}
+      />
     </div>
   );
 }

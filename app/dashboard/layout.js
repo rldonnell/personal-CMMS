@@ -18,6 +18,9 @@ const ALL_NAV_ITEMS = [
   { label: 'Garage Door', href: '/dashboard/garage-door', icon: '🚗', slug: 'garage-door', categoryId: 10 },
   { label: 'Irrigation', href: '/dashboard/irrigation', icon: '💧', slug: 'irrigation', categoryId: 11 },
   { label: 'Honey-Do List', href: '/dashboard/honey-do', icon: '🍯' },
+  { label: 'History', href: '/dashboard/history', icon: '📜' },
+  { label: 'Contacts', href: '/dashboard/contacts', icon: '📇' },
+  { label: 'Seasonal', href: '/dashboard/seasonal', icon: '🗓️' },
   { label: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
 ];
 
