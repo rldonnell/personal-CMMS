@@ -1,6 +1,6 @@
-# Four Winds Home CMMS
+# Home CMMS
 
-A free, lightweight home maintenance tracker — a promotional tool for [Four Winds CMMS](https://fourwindscmms.com).
+A free, lightweight home maintenance tracker.
 
 ## What It Does
 
@@ -25,8 +25,8 @@ Ships with pre-loaded maintenance schedules based on industry standards. Users c
 
 ### 1. Clone and install
 ```bash
-git clone https://github.com/rldonnell/fourwinds-home-cmms.git
-cd fourwinds-home-cmms
+git clone https://github.com/rldonnell/home-cmms.git
+cd home-cmms
 npm install
 ```
 
@@ -69,7 +69,7 @@ Make sure to add the same env vars (DATABASE_URL, JWT_SECRET) in Vercel → Sett
 5. Clicking a category shows all tasks with filters (overdue, due soon, upcoming)
 6. Marking a task "Done" logs the completion and schedules the next occurrence
 7. Users can add custom maintenance tasks per category
-8. Subtle CTAs throughout point to the full Four Winds CMMS product
+8. Simple, focused dashboard - no upsells
 
 ## Lead Capture
 
@@ -83,7 +83,7 @@ This data lives in the `users` table in Neon Postgres. You can query it directly
 ## File Structure
 
 ```
-fourwinds-home-cmms/
+home-cmms/
 ├── app/
 │   ├── api/
 │   │   ├── auth/         # signup, login, logout, me

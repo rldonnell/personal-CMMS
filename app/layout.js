@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Four Winds Home CMMS',
+  title: 'Home CMMS',
   description: 'Keep your home running smoothly with scheduled maintenance tracking for HVAC, water heaters, and pools.',
 };
 

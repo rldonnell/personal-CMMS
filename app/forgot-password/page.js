@@ -41,22 +41,8 @@ export default function ForgotPasswordPage() {
       <header className="bg-fw-navy text-white">
         <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-            <div className="w-10 h-10 bg-fw-red rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              FW
-            </div>
-            <div>
-              <h1 className="text-xl font-bold leading-tight">Four Winds</h1>
-              <p className="text-xs text-blue-200 -mt-0.5">Home CMMS</p>
-            </div>
+            <h1 className="text-xl font-bold leading-tight">Home CMMS</h1>
           </Link>
-          <a
-            href="https://fourwindscmms.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-blue-200 hover:text-white transition"
-          >
-            fourwindscmms.com →
-          </a>
         </div>
       </header>
 
@@ -125,7 +111,7 @@ export default function ForgotPasswordPage() {
 
       {/* Footer */}
       <footer className="bg-fw-navy text-blue-200 py-6 px-6 text-center text-sm">
-        <p>© {new Date().getFullYear()} Four Winds CMMS · Home Edition · A free tool by{' '}
+        <p>© {new Date().getFullYear()} Home CMMS · A free tool by{' '}
           <a href="https://p5marketing.com" className="text-white hover:underline" target="_blank" rel="noopener noreferrer">
             P5 Marketing
           </a>

@@ -62,22 +62,8 @@ export default function LandingPage() {
       <header className="bg-fw-navy text-white">
         <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-fw-red rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              FW
-            </div>
-            <div>
-              <h1 className="text-xl font-bold leading-tight">Four Winds</h1>
-              <p className="text-xs text-blue-200 -mt-0.5">Home CMMS</p>
-            </div>
+            <h1 className="text-xl font-bold leading-tight">Home CMMS</h1>
           </div>
-          <a
-            href="https://fourwindscmms.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-blue-200 hover:text-white transition"
-          >
-            fourwindscmms.com →
-          </a>
         </div>
       </header>
 
@@ -91,7 +77,7 @@ export default function LandingPage() {
               </h2>
               <p className="text-blue-100 text-lg mb-6 leading-relaxed">
                 Stop guessing when your HVAC filter was last changed or when the pool needs its next shock treatment.
-                Four Winds Home CMMS keeps every system in your home on a clear, automated maintenance schedule.
+                Home CMMS keeps every system in your home on a clear, automated maintenance schedule.
               </p>
               <div className="flex gap-3 text-sm">
                 <span className="bg-white/10 px-3 py-1.5 rounded-full">Free forever</span>
@@ -231,30 +217,10 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-12 px-6 bg-gray-50">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">
-              See what a real CMMS can do for your business
-            </h3>
-            <p className="text-gray-600 mb-6">
-              This free home version is just a taste. Four Winds CMMS offers enterprise-grade maintenance management
-              for facilities, fleets, manufacturing, and more.
-            </p>
-            <a
-              href="https://fourwindscmms.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-fw-red text-white px-8 py-3 rounded-lg font-semibold hover:bg-fw-red-dark transition"
-            >
-              Explore Four Winds CMMS →
-            </a>
-          </div>
-        </section>
       </main>
 
       <footer className="bg-fw-navy text-blue-200 py-6 px-6 text-center text-sm">
-        <p>© {new Date().getFullYear()} Four Winds CMMS · Home Edition · A free tool by{' '}
+        <p>© {new Date().getFullYear()} Home CMMS · A free tool by{' '}
           <a href="https://p5marketing.com" className="text-white hover:underline" target="_blank" rel="noopener noreferrer">
             P5 Marketing
           </a>

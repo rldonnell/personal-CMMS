@@ -82,13 +82,7 @@ export default function DashboardLayout({ children }) {
       <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-fw-navy text-white transform transition-transform duration-200 lg:translate-x-0 lg:static lg:flex lg:flex-col ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-fw-red rounded-lg flex items-center justify-center text-white font-bold text-sm">
-              FW
-            </div>
-            <div>
-              <div className="font-bold text-sm leading-tight">Four Winds</div>
-              <div className="text-xs text-blue-200">Home CMMS</div>
-            </div>
+            <div className="font-bold text-base leading-tight">Home CMMS</div>
           </div>
         </div>
 
@@ -121,17 +115,6 @@ export default function DashboardLayout({ children }) {
           >
             Sign out
           </button>
-          <div className="mt-4 p-3 bg-white/5 rounded-lg">
-            <p className="text-xs text-blue-200 mb-1">Want more?</p>
-            <a
-              href="https://fourwindscmms.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-fw-red hover:text-red-300 font-medium"
-            >
-              See the full CMMS →
-            </a>
-          </div>
         </div>
       </aside>
 

@@ -121,21 +121,6 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Promo banner */}
-      <div className="mt-8 bg-gradient-to-r from-fw-navy to-fw-navy-dark rounded-xl p-6 text-white">
-        <h3 className="font-bold mb-1">Like what you see?</h3>
-        <p className="text-blue-100 text-sm mb-3">
-          The full Four Winds CMMS handles facilities, fleets, equipment, work orders, inventory, and teams — all in one platform.
-        </p>
-        <a
-          href="https://fourwindscmms.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-fw-red text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-fw-red-dark transition"
-        >
-          Learn More →
-        </a>
-      </div>
     </div>
   );
 }
